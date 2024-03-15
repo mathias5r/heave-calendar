@@ -54,17 +54,17 @@ const Calendar: React.FC = () => {
 
   const matrix = useMemo(() => createCalendarMatrix(year, month), [baseDate]);
 
-  const handleMonthChange = (value: number) => () => {
-    const newDate = new Date(baseDate)
-    newDate.setMonth(newDate.getMonth() + value);
-    setBaseDate(newDate)
-  }
+  // const handleMonthChange = (value: number) => () => {
+  //   const newDate = new Date(baseDate)
+  //   newDate.setMonth(newDate.getMonth() + value);
+  //   setBaseDate(newDate)
+  // }
 
   const handleItemPress = (day: number) => () => {
     setSelectedDate(new Date(year, month, day))
   }
 
-  const isSelectedDay = (day: number, row: number) => 
+  const isSelected = (day: number, row: number) => 
     !isOutOfMonth(day, row) && 
     day === selectedDate.getDate() && 
     selectedDate.getMonth() === baseDate.getMonth() && 
@@ -72,25 +72,31 @@ const Calendar: React.FC = () => {
 
 
   return <View style={styles.container}>
-      <Text style={styles.year}>{year}</Text>
-      <Text style={styles.change}>{baseDate.toLocaleString('default', { month: 'long' })}</Text>
+      <View style={styles.monthYearWrapper}>
+        <Text style={styles.month}>{baseDate.toLocaleString('default', { month: 'long' })}</Text>
+        <Text style={styles.year}>{year}</Text>
+      </View>
       {matrix.map((row, rowIndex) => 
-        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
+        <View style={styles.dateWrapper}>
           {row.map(item => 
-            <TouchableOpacity disabled={isOutOfMonth(item, rowIndex)} onPress={handleItemPress(item)} style={[{ width: '14.3%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center'}, isOutOfMonth(item, rowIndex) && { opacity: 0.5 }]}>
-              <View style={[{ width: '80%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 100 }, isSelectedDay(item, rowIndex) && { backgroundColor: colors.selectedDate}]} >
+            <TouchableOpacity 
+                disabled={isOutOfMonth(item, rowIndex)} 
+                onPress={handleItemPress(item)} 
+                style={[styles.dateButton, isOutOfMonth(item, rowIndex) && styles.disabled]}
+              >
+              <View style={[styles.roundView, isSelected(item, rowIndex) && styles.selected]} >
                 <Text style={styles.date}>{item}</Text>
               </View>
             </TouchableOpacity>
           )}
         </View>
       )}
-      <TouchableOpacity onPress={handleMonthChange(-1)}>
+      {/* <TouchableOpacity onPress={handleMonthChange(-1)}>
         <Text style={styles.change}>Previous</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleMonthChange(1)}>
         <Text style={styles.change}>Next</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
 };
 
@@ -98,14 +104,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.secondaryBackground,
     borderRadius: 7,
-    paddingHorizontal: 12,
-    paddingVertical: 21,
+    paddingVertical: 10,
     borderWidth: 1,
     borderColor: colors.cardBorder
   },
-  change: {
+  month: {
     color: 'white',
-    fontFamily: 'Poppins-SemiBold'
+    fontFamily: 'Poppins-SemiBold',
+    paddingRight: 3
   },
   date: {
     color: 'white',
@@ -116,7 +122,37 @@ const styles = StyleSheet.create({
   year: {
     color: 'white',
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 25
+    fontSize: 25,
+    bottom: -4
+  },
+  monthYearWrapper: { 
+    paddingLeft: '4%', 
+    flexDirection: 'row', 
+    alignItems: 'flex-end' 
+  },
+  dateWrapper: { 
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+  dateButton: {
+    width: '14.3%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  disabled: { 
+    opacity: 0.5 
+  },
+  roundView: {
+    width: '80%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 100
+  },
+  selected: { 
+    backgroundColor: colors.selectedDate
   }
 });
 
