@@ -5,7 +5,6 @@ import colors from "../constants/colors";
 import MonthSelector from "./month-selector";
 import { createCalendarMatrix, isOutOfMonth } from "../utils/calendar";
 
-
 const Calendar: React.FC = () => {
   const [baseDate, setBaseDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(new Date())
