@@ -3,6 +3,7 @@ import { isLeapYear } from "../utils/date";
 import { MAX_MONTH_DAYS, MAX_MONTH_DAYS_LEAP_YEAR } from "../constants/date";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../constants/colors";
+import MonthSelector from "./month-selector";
 
 const getMaxDays = (year: number, month: number): number[] => {
   const maxDays = isLeapYear(year) ? MAX_MONTH_DAYS_LEAP_YEAR : MAX_MONTH_DAYS;
@@ -54,11 +55,11 @@ const Calendar: React.FC = () => {
 
   const matrix = useMemo(() => createCalendarMatrix(year, month), [baseDate]);
 
-  // const handleMonthChange = (value: number) => () => {
-  //   const newDate = new Date(baseDate)
-  //   newDate.setMonth(newDate.getMonth() + value);
-  //   setBaseDate(newDate)
-  // }
+  const handleMonthChange = (value: number) => () => {
+    const newDate = new Date(baseDate)
+    newDate.setMonth(newDate.getMonth() + value);
+    setBaseDate(newDate)
+  }
 
   const handleItemPress = (day: number) => () => {
     setSelectedDate(new Date(year, month, day))
@@ -72,9 +73,15 @@ const Calendar: React.FC = () => {
 
 
   return <View style={styles.container}>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
       <View style={styles.monthYearWrapper}>
         <Text style={styles.month}>{baseDate.toLocaleString('default', { month: 'long' })}</Text>
         <Text style={styles.year}>{year}</Text>
+      </View>
+      <MonthSelector 
+        onLeftPress={handleMonthChange(-1)} 
+        onRightPress={handleMonthChange(1)} 
+      />
       </View>
       {matrix.map((row, rowIndex) => 
         <View style={styles.dateWrapper}>
@@ -91,12 +98,6 @@ const Calendar: React.FC = () => {
           )}
         </View>
       )}
-      {/* <TouchableOpacity onPress={handleMonthChange(-1)}>
-        <Text style={styles.change}>Previous</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleMonthChange(1)}>
-        <Text style={styles.change}>Next</Text>
-      </TouchableOpacity> */}
     </View>
 };
 
