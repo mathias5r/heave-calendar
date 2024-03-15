@@ -10,10 +10,10 @@ type Props = {
 const MonthSelector: React.FC<Props> = ({ onLeftPress, onRightPress }) => 
   <View style={styles.container}>
     <TouchableOpacity onPress={onLeftPress} style={styles.button}>
-      <LeftIcon width={10} height={19} /> 
+      <LeftIcon width={8} height={19} /> 
     </TouchableOpacity>
     <TouchableOpacity onPress={onRightPress} style={styles.button}>
-      <RightIcon width={10} height={19} /> 
+      <RightIcon width={8} height={19} /> 
     </TouchableOpacity>
   </View>
 

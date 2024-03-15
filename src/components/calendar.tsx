@@ -72,33 +72,35 @@ const Calendar: React.FC = () => {
     selectedDate.getFullYear() === baseDate.getFullYear()
 
 
-  return <View style={styles.container}>
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-      <View style={styles.monthYearWrapper}>
-        <Text style={styles.month}>{baseDate.toLocaleString('default', { month: 'long' })}</Text>
-        <Text style={styles.year}>{year}</Text>
-      </View>
-      <MonthSelector 
-        onLeftPress={handleMonthChange(-1)} 
-        onRightPress={handleMonthChange(1)} 
-      />
-      </View>
-      {matrix.map((row, rowIndex) => 
-        <View style={styles.dateWrapper}>
-          {row.map(item => 
-            <TouchableOpacity 
-                disabled={isOutOfMonth(item, rowIndex)} 
-                onPress={handleItemPress(item)} 
-                style={[styles.dateButton, isOutOfMonth(item, rowIndex) && styles.disabled]}
-              >
-              <View style={[styles.roundView, isSelected(item, rowIndex) && styles.selected]} >
-                <Text style={styles.date}>{item}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.monthYearWrapper}>
+          <Text style={styles.month}>{baseDate.toLocaleString('default', { month: 'long' })}</Text>
+          <Text style={styles.year}>{year}</Text>
         </View>
-      )}
+        <MonthSelector 
+          onLeftPress={handleMonthChange(-1)} 
+          onRightPress={handleMonthChange(1)} 
+        />
+      </View>
+        {matrix.map((row, rowIndex) => 
+          <View style={styles.dateWrapper}>
+            {row.map(item => 
+              <TouchableOpacity 
+                  disabled={isOutOfMonth(item, rowIndex)} 
+                  onPress={handleItemPress(item)} 
+                  style={[styles.dateButton, isOutOfMonth(item, rowIndex) && styles.disabled]}
+                >
+                <View style={[styles.roundView, isSelected(item, rowIndex) && styles.selected]} >
+                  <Text style={styles.date}>{item}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
     </View>
+  )
 };
 
 const styles = StyleSheet.create({
@@ -126,6 +128,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     bottom: -4
   },
+  header: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    paddingBottom: 12
+  },
   monthYearWrapper: { 
     paddingLeft: '4%', 
     flexDirection: 'row', 
@@ -138,7 +145,7 @@ const styles = StyleSheet.create({
   },
   dateButton: {
     width: '14.3%',
-    aspectRatio: 1,
+    aspectRatio: 1.3,
     justifyContent: 'center',
     alignItems: 'center',
   },
