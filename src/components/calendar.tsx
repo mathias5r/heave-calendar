@@ -46,7 +46,6 @@ const isOutOfMonth = (day: number, row: number) => {
 }
 
 const Calendar: React.FC = () => {
-
   const [baseDate, setBaseDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(new Date())
 
@@ -73,14 +72,14 @@ const Calendar: React.FC = () => {
 
 
   return <View style={styles.container}>
-      <Text style={styles.change}>{year}</Text>
+      <Text style={styles.year}>{year}</Text>
       <Text style={styles.change}>{baseDate.toLocaleString('default', { month: 'long' })}</Text>
       {matrix.map((row, rowIndex) => 
         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
           {row.map(item => 
             <TouchableOpacity disabled={isOutOfMonth(item, rowIndex)} onPress={handleItemPress(item)} style={[{ width: '14.3%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center'}, isOutOfMonth(item, rowIndex) && { opacity: 0.5 }]}>
               <View style={[{ width: '80%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 100 }, isSelectedDay(item, rowIndex) && { backgroundColor: colors.selectedDate}]} >
-                <Text style={{ color: 'white', position: 'absolute'}}>{item}</Text>
+                <Text style={styles.date}>{item}</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -105,7 +104,19 @@ const styles = StyleSheet.create({
     borderColor: colors.cardBorder
   },
   change: {
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Poppins-SemiBold'
+  },
+  date: {
+    color: 'white',
+    position: 'absolute',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 15
+  },
+  year: {
+    color: 'white',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 25
   }
 });
 

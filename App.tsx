@@ -1,9 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
 import Home from './src/screens/Home';
+import useFonts from './src/hooks/useFonts';
 
 export default function App() {
+  const { fontsLoaded, fontError, onLayoutRootView } = useFonts();
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
   return (
-    <Home />
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <Home />
+    </View>
   );
 }
