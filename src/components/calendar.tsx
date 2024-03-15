@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 import { isLeapYear } from "../utils/date";
 import { MAX_MONTH_DAYS, MAX_MONTH_DAYS_LEAP_YEAR } from "../constants/date";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../constants/colors";
 import MonthSelector from "./month-selector";
 
@@ -70,7 +71,6 @@ const Calendar: React.FC = () => {
     day === selectedDate.getDate() && 
     selectedDate.getMonth() === baseDate.getMonth() && 
     selectedDate.getFullYear() === baseDate.getFullYear()
-
 
   return (
     <View style={styles.container}>
