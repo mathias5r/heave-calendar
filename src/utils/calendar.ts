@@ -7,6 +7,8 @@ const getMaxDays = (year: number, month: number): number[] => {
 }
 
 export const createCalendarMatrix = (year: number, month: number): number[][] => {
+  if(month < 0 || month > 11) throw new Error('Invalid month');
+
   const matrix: number[][] = []
 
   const firstDay = new Date(year, month, 1).getDay();
