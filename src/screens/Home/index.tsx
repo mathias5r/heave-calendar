@@ -5,7 +5,7 @@ import Calendar from "../../components/calendar";
 const Home: React.FC = () => 
   <View style={styles.container}>
     <Text maxFontSizeMultiplier={1.2} style={styles.title}>Calendar</Text>
-    <Calendar />
+    <Calendar onDateSelected={(date: Date) => console.log(date)} />
   </View>
 
 

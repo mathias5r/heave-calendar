@@ -6,7 +6,11 @@ import MonthSelector from "./month-selector";
 import { createCalendarMatrix, isOutOfMonth } from "../utils/calendar";
 import { getFontSize } from "../utils/font";
 
-const Calendar: React.FC = () => {
+type Props = {
+  onDateSelected: (date: Date) => void
+}
+
+const Calendar: React.FC<Props> = ({ onDateSelected }) => {
   const [baseDate, setBaseDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(new Date())
 
@@ -22,7 +26,9 @@ const Calendar: React.FC = () => {
   }
 
   const handleItemPress = (day: number) => () => {
-    setSelectedDate(new Date(year, month, day))
+    const date = new Date(year, month, day);
+    setSelectedDate(date)
+    onDateSelected(date)
   }
 
   const isSelected = (day: number, row: number) => 
