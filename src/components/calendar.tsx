@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import colors from "../constants/colors";
 import MonthSelector from "./month-selector";
 import { createCalendarMatrix, isOutOfMonth } from "../utils/calendar";
+import { getFontSize } from "../utils/font";
 
 const Calendar: React.FC = () => {
   const [baseDate, setBaseDate] = useState(new Date())
@@ -34,8 +35,8 @@ const Calendar: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.monthYearWrapper}>
-          <Text style={styles.month}>{baseDate.toLocaleString('default', { month: 'long' })}</Text>
-          <Text style={styles.year}>{year}</Text>
+          <Text maxFontSizeMultiplier={1.2} style={styles.month}>{baseDate.toLocaleString('default', { month: 'long' })}</Text>
+          <Text maxFontSizeMultiplier={1.2} style={styles.year}>{year}</Text>
         </View>
         <MonthSelector 
           onLeftPress={handleMonthChange(-1)} 
@@ -43,15 +44,16 @@ const Calendar: React.FC = () => {
         />
       </View>
         {matrix.map((row, rowIndex) => 
-          <View style={styles.dateWrapper}>
-            {row.map(item => 
+          <View key={`${row}-${rowIndex}`} style={styles.dateWrapper}>
+            {row.map((item, itemIndex) => 
               <TouchableOpacity 
+                  key={`${item}-${itemIndex}`}
                   disabled={isOutOfMonth(item, rowIndex)} 
                   onPress={handleItemPress(item)} 
                   style={[styles.dateButton, isOutOfMonth(item, rowIndex) && styles.disabled]}
                 >
                 <View style={[styles.roundView, isSelected(item, rowIndex) && styles.selected]} >
-                  <Text style={styles.date}>{item}</Text>
+                  <Text maxFontSizeMultiplier={1.2} style={styles.date}>{item}</Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -67,7 +69,9 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor: colors.cardBorder
+    borderColor: colors.cardBorder,
+    minHeight: 200,
+    minWidth: 200,
   },
   month: {
     color: 'white',
@@ -78,13 +82,15 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'absolute',
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 15
+    fontSize: getFontSize(15),
+    includeFontPadding: false
   },
   year: {
     color: 'white',
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 25,
-    bottom: -4
+    fontSize: getFontSize(25),
+    includeFontPadding: false,
+    bottom: Platform.OS === 'ios' ? -4 : 0
   },
   header: {
     flexDirection: 'row', 
@@ -99,7 +105,7 @@ const styles = StyleSheet.create({
   dateWrapper: { 
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   dateButton: {
     width: '14.3%',

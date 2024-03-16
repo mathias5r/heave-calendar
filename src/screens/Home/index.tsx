@@ -4,7 +4,7 @@ import Calendar from "../../components/calendar";
 
 const Home: React.FC = () => 
   <View style={styles.container}>
-    <Text style={styles.title}>Calendar</Text>
+    <Text maxFontSizeMultiplier={1.2} style={styles.title}>Calendar</Text>
     <Calendar />
   </View>
 
